@@ -1,0 +1,4 @@
+1. createTask(string memory _description)
+2. claimTask(uint256 _taskId)
+3. verifyTask(uint256 _taskId)
+4. completeTask(uint256 _taskId)
