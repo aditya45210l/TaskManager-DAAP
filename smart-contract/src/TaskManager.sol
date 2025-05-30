@@ -160,4 +160,21 @@ contract TaskManager {
         task.status = TaskStatus.Completed;
         emit TaskCompleted(_taskId, task.creator, task.completer);
     }
+
+    /***
+     * Getters functions
+     */
+    function getTask(uint256 _taskId) external view returns (Task memory) {
+        if (_taskId >= s_taskCounter) {
+            revert TaskManager__InvalidTaskId();
+        }
+        return s_tasks[_taskId];
+    }
+
+    function getTaskStatus(uint256 _taskId) external view returns (TaskStatus) {
+        if (_taskId >= s_taskCounter) {
+            revert TaskManager__InvalidTaskId();
+        }
+        return s_tasks[_taskId].status;
+    }
 }
