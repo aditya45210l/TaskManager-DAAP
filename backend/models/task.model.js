@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { unique } from "viem/chains";
 
 const taskSchema = new mongoose.Schema(
   {

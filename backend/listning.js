@@ -1,59 +1,41 @@
-import { parseAbiItem } from "viem";
-import contractAbi from "./utils/abi.js";
 import client from "./configs/client.js";
-import { taskCreated } from "./events/taskCreated.event.js";
-// Replace with your deployed contract address
-// const contractAddress = '0xC5b86464c8704664bdcC43FD4CDe86DE2efB2A8C';
-const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+import { createTask } from "./controllers/taskCreated.controller.js";
+import { taskCompleted } from "./controllers/taskCompleted.controller.js";
+import { taskClaimed } from "./controllers/taskClaimed.controller.js";
+import { taskSubmit } from "./controllers/taskSubmit.controller.js";
+import { eventAbi } from "./utils/eventAbi.js";
+import { CONTRACT_ADDRESS } from "./configs/env.js";
 
-// Define the event ABI (same as emitted from Solidity)
-const taskCreatedEvent = parseAbiItem(
-  "event TaskCreated(uint256 indexed taskId,uint256 reward,string description)"
-);
+const handlers = {
+  TaskCreated: createTask,
+  TaskClaimed: taskClaimed,
+  TaskVerifing: taskSubmit,
+  TaskCompleted: taskCompleted,
+};
 
-// Start listening for events
-async function listenForEvents() {
-  console.log("Listening for TaskCreated events on Sepolia...");
+const watch = (eventName) => {
+  const _eventAbi = eventAbi.find((e) => e.name === eventName);
 
   client.watchEvent({
-    address: contractAddress,
-    event: taskCreatedEvent,
+    address: CONTRACT_ADDRESS,
+    event: _eventAbi,
     onLogs: async (logs) => {
       for (const log of logs) {
-        //   console.log('🔔 Task Created:', {
-        //     taskId: log.args.taskId.toString(),
-        //     description: log.args.description,
-        //   }
-
-        // );
-        console.log("🔔 Task Created:", {
-          taskId: log.args.taskId.toString(),
-          reward: log.args.reward.toString(),
-          description: log.args.description,
-        });
-        // await createTask(log.args.taskId);
-        await taskCreated(log.args);
+        try {
+          await handlers[eventName](log.args);
+          console.log(`Handled event ${eventName}`, log.args);
+        } catch (err) {
+          console.error(`Error handling ${eventName}:`, err);
+        }
       }
     },
   });
-}
-
-const createTask = async (taskId) => {
-  try {
-    const data = await client.readContract({
-      address: contractAddress,
-      abi: contractAbi,
-      functionName: "getTask",
-      args: [taskId],
-    });
-
-    console.log("Task Data:", data);
-  } catch (error) {
-    console.error("Error fetching task data:", error);
-    return;
-  }
 };
 
-console.log(process.env.DB_URL);
-
-export default listenForEvents;
+export const watchAllEvents = () => {
+  const eventNames = Object.keys(handlers);
+  eventNames.forEach((eventName) => {
+    watch(eventName);
+    console.log(`Watching event: ${eventName}`);
+  });
+};
