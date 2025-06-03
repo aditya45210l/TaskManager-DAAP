@@ -1,12 +1,10 @@
 import { Router } from "express";
+import { getAllTaskController } from "../controllers/getAllTask.controller.js";
+import { getSingleTaskController } from "../controllers/getSingleTask.controller.js";
 
 const taskRouter = Router();
 
-taskRouter.get("/", (req, res) => {
-  res.send("Task Router is working!");
-});
-taskRouter.get("/:address", (req, res) => {
-  res.send(`Task Router is working for address: ${req.params.address}`);
-});
+taskRouter.get("/", getAllTaskController);
+taskRouter.get("/:address",getSingleTaskController);
 
 export default taskRouter;

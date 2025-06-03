@@ -11,15 +11,11 @@ const app = express();
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/task", taskRouter);
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
 app.use(errorMiddleware);
 
 app.listen(PORT, async () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
   await connectToDatabase();
-  await handleTaskCreated();
-  await watchAllEvents();
+  // await handleTaskCreated();
+  // await watchAllEvents();
 });
