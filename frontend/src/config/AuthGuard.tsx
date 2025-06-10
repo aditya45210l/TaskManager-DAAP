@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useAccount } from "wagmi";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useEffect } from "react";
@@ -23,7 +23,7 @@ const AuthGuard = ({ children }: { children: ReactNode }) => {
     if (isConnected && isLandingPage) {
       router.replace("/dashboard");
     }
-  }, [isConnected, status, pathname, router]);
+  }, [isConnected, status, pathname, router,isLandingPage,isProtected]);
 
   return <>{children}</>;
 };

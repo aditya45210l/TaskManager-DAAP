@@ -1,10 +1,11 @@
+'use client'
 import AuthGuard from "@/config/AuthGuard";
 import { ReactNode } from "react";
 
 const ProtectedLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
-        <AuthGuard>{children}</AuthGuard>
+      <AuthGuard>{children}</AuthGuard>
     </>
   );
 };

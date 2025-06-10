@@ -1,12 +1,15 @@
+'use client'
+import Navbar from "@/components/landigPage/Navbar";
 import AuthGuard from "@/config/AuthGuard";
 import { ReactNode } from "react";
 
 const unProctedLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
-      <AuthGuard>
-        {children}
-      </AuthGuard>
+      <Navbar />
+      <main >
+        <AuthGuard>{children}</AuthGuard>
+      </main>
     </>
   );
 };
