@@ -4,8 +4,8 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <header className="bg-gray-800 top-0 left-0 z-50  text-white">
-      <nav className="h-full px-6 py-4 flex justify-between items-center border-b border-gray-700">
+    <header className="bg-medium-dark top-0 left-0 z-50 text-white">
+      <nav className="h-full px-6 py-4 flex justify-between items-center border-b shadow border-gray-700">
         {/* Logo and Title */}
         <span className="flex items-center gap-2 min-w-fit justify-start">
           <span>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 const page = () => {
+
   return (
     <div className="mx-auto flex flex-col items-center text-white bg-200">
       {/* Hero Section */}
@@ -19,13 +20,13 @@ const page = () => {
             Manage your tasks securely and transparently with TaskChain, the
             blockchain-based task manager built for the future of work.
           </p>
-          <button className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-[#347fca] hover:bg-[#2a6cb3] text-white text-base font-bold leading-normal tracking-[0.015em] transition-colors">
+          <button className="btn-primary">
             Launch App
           </button>
         </div>
       </section>
       {/* Features Section */}
-      <section className="  w-full px-4 bg-[#182029]">
+      <section className="  w-full px-4 bg-medium-dark">
         {/* Why TaskChain? Container*/}
         <div className="mx-auto gap-12 flex flex-col max-w-5xl md:py-24 py-16">
           {/* Why TaskChain? Header */}
@@ -205,7 +206,7 @@ const page = () => {
         </div>
       </section>
       {/* CTA -> call to actions section */}
-      <section className="w-full bg-[#182029]">
+      <section className="w-full bg-medium-dark">
         <div className="flex flex-col gap-6 mx-auto md:py-24 py-16 max-md:px-5 max-w-3xl">
           <h2 className="md:text-5xl text-4xl font-black leading-tight text-center ">
             {" "}
@@ -216,7 +217,7 @@ const page = () => {
             and efficient task management. Get started today and experience the
             future of productivity.
           </p>
-          <button className=" self-center cursor-pointer rounded-lg h-12 px-8 bg-[#347fca] hover:bg-[#2a6cb3] text-white text-base font-bold leading-normal tracking-[0.015em] transition-colors w-fit mx-auto">
+          <button className="btn-primary mx-auto">
             Connect Wallet
           </button>
         </div>
