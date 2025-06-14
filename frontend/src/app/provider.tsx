@@ -1,7 +1,5 @@
 'use client'
-import { useState, type ReactNode } from "react";
-
-
+import { useState, ReactNode } from "react";
 import config from "../provider/rainbowKitConfig";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
