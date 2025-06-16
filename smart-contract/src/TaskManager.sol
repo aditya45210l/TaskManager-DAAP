@@ -22,6 +22,7 @@ contract TaskManager {
      */
     struct Task {
         uint256 id;
+        string title;
         string description;
         address creator;
         address completer;
@@ -99,10 +100,12 @@ contract TaskManager {
 
     function createTask(
         string memory _description,
+        string memory _title,
         uint256 _reward
     ) external returns (uint256) {
         s_tasks[s_taskCounter] = Task({
             id: s_taskCounter,
+            title:_title,
             description: _description,
             creator: msg.sender,
             completer: address(0),
