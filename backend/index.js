@@ -8,7 +8,6 @@ import { PORT } from "./configs/env.js";
 import cors from "cors";
 import { handleTaskCreated } from "./controllers/taskCreated.controller.js";
 
-
 const app = express();
 app.use(cors());
 app.use(express.json());

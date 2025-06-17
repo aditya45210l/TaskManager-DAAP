@@ -26,7 +26,7 @@ const GNavBar = () => {
             {/* Dashboard */}
           <Link
             className="text-gray-300 hover:text-blue-btn font-medium leading-normal transition-colors flex items-center gap-1"
-            href="/"
+            href="/dashboard"
           >
             <House size={18}/>
             <p>Dashboard</p>

@@ -20,9 +20,9 @@ const page = () => {
             Manage your tasks securely and transparently with TaskChain, the
             blockchain-based task manager built for the future of work.
           </p>
-          <button className="btn-primary">
+          <Link href={'/dashboard'} className="btn-primary">
             Launch App
-          </button>
+          </Link>
         </div>
       </section>
       {/* Features Section */}
