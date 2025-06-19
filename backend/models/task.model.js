@@ -8,11 +8,19 @@ const taskSchema = new mongoose.Schema(
       unique: true,
       min: 0,
     },
-    description: {
+    title: {
       type: String,
       required: true,
       trim: true,
       minLength: 3,
+      maxLength: 50,
+      toLowerCase: true,
+    },
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+      minLength: 20,
       maxLength: 200,
       toLowerCase: true,
     },

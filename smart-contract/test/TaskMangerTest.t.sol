@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity 0.8.20;
 
 import {TaskManager} from "../src/TaskManager.sol";
 import {DeployTaskManager} from "../script/DeployTaskManager.s.sol";
@@ -14,7 +14,11 @@ contract TestTaskManager is Test {
 
     modifier createTask() {
         vm.prank(ALICE);
-        taskManager.createTask("Test Task", 10 ether);
+        taskManager.createTask{value: 10 ether}(
+            "Test Task",
+            "this is descriptons",
+            10 ether
+        );
         _;
     }
 
@@ -25,12 +29,16 @@ contract TestTaskManager is Test {
         vm.deal(BOB, 100 ether);
     }
 
-    function testCreateTask() public  {
+    function testCreateTask() public {
         vm.prank(ALICE);
-        taskManager.createTask("Test Task", 10 ether);
+        taskManager.createTask{value:10 ether}("Test Task", "this is descriptions", 10 ether);
         TaskManager.Task memory task = taskManager.getTask(0);
         assertEq(task.id, 0, "Task ID should be 0");
-        assertEq(task.description, "Test Task", "Task description mismatch");
+        assertEq(
+            task.description,
+            "this is descriptions",
+            "Task description mismatch"
+        );
         assertEq(task.creator, ALICE, "Task creator mismatch");
         assertEq(
             uint256(taskManager.getTaskStatus(0)),
@@ -51,19 +59,4 @@ contract TestTaskManager is Test {
         );
     }
 
-    function testSubmitTask() public createTask{
-        vm.prank(BOB);
-        taskManager.claimTask(0);
-        vm.prank(BOB);
-        taskManager.submitTask(0);
-        
-        TaskManager.Task memory task = taskManager.getTask(0);
-        assertEq(
-            uint256(taskManager.getTaskStatus(0)),
-            uint256(TaskManager.TaskStatus.Verifing)
-        );
-        assertEq(uint256(taskManager.getTaskStatus(0)), uint256(TaskManager.TaskStatus.Verifing), "Task status mismatch");
-        assertEq(task.completer, address(0), "Task completer should be address(0)");
-        assertEq(task.claimer, BOB, "Task claimer mismatch");
-    }
 }

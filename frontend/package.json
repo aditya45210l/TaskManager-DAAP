@@ -15,6 +15,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@rainbow-me/rainbowkit": "^2.2.6",
     "@tanstack/react-query": "^5.80.6",
+    "@wagmi/core": "^2.17.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -26,7 +27,7 @@
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.58.0",
     "tailwind-merge": "^3.3.1",
-    "viem": "^2.31.0",
+    "viem": "^2.31.3",
     "wagmi": "^2.15.6"
   },
   "devDependencies": {

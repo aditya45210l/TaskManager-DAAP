@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity 0.8.20;
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-contract TaskManager {
-    /***
+contract TaskManager is ReentrancyGuard {
+    /**
+     *
      * Type declarations (Enums and Structs)
      */
 
@@ -20,6 +22,7 @@ contract TaskManager {
      * @notice we decelair a struct to represent a task.
      * @dev The struct contains an id, description, creator, completer, claimer, status, and reward.
      */
+
     struct Task {
         uint256 id;
         string title;
@@ -30,13 +33,17 @@ contract TaskManager {
         TaskStatus status;
         uint256 reward;
     }
-    /***
+
+    /**
+     *
      * State Variables
      */
+
     uint256 public s_taskCounter;
     address private immutable i_owner;
 
-    /***
+    /**
+     *
      * Mappings
      */
     // @dev The mapping stores tasks by their ID.
@@ -46,6 +53,8 @@ contract TaskManager {
     // The mapping stores the claimer reward for each task.
     mapping(address claimer => mapping(uint256 _taskId => uint256 _reward))
         public s_claimerReward;
+    //mapping for registerd user!
+    mapping(address => uint256) userLoyaltyPoints;
 
     //Events
     event TaskCreated(
@@ -61,14 +70,19 @@ contract TaskManager {
         address indexed TaskOwner,
         address indexed completer
     );
-    /***
+    /**
+     *
      * Errors
      */
+
     error TaskManager__NotTaskCreator();
-    error TaskManager__NotTaskClaimer();
     error TaskManager__TaskAllreadyClaimed();
     error TaskManager__InvalidTaskId();
     error TaskManager__OwnerCannotClaimTask();
+    error TaskManager__TaskDontHaveBalance();
+    error TaskManager__TransferFailed();
+    error TaskManager__notInoughBalaneToCreateTask();
+    error TaskManager__onlyTaskClaimerCanCallThisFunc();
 
     modifier onlyCreater(uint256 _taskId) {
         if (_taskId >= s_taskCounter) {
@@ -76,12 +90,6 @@ contract TaskManager {
         }
         if (msg.sender != s_tasks[_taskId].creator) {
             revert TaskManager__NotTaskCreator();
-        }
-        _;
-    }
-    modifier onlyClaimer(uint256 _taskId) {
-        if (msg.sender != s_tasks[_taskId].claimer) {
-            revert TaskManager__NotTaskClaimer();
         }
         _;
     }
@@ -93,19 +101,22 @@ contract TaskManager {
 
     /**
      * @dev This function allows a user to create a task.
+     * @param _title The title of the task.
      * @param _description The description of the task.
      * @param _reward The reward for completing the task.
      * @return The ID of the created task.
      */
-
     function createTask(
-        string memory _description,
         string memory _title,
+        string memory _description,
         uint256 _reward
-    ) external returns (uint256) {
+    ) external payable returns (uint256) {
+        if (msg.value != _reward) {
+            revert TaskManager__notInoughBalaneToCreateTask();
+        }
         s_tasks[s_taskCounter] = Task({
             id: s_taskCounter,
-            title:_title,
+            title: _title,
             description: _description,
             creator: msg.sender,
             completer: address(0),
@@ -119,13 +130,14 @@ contract TaskManager {
         return s_taskCounter - 1;
     }
 
+    // claimTask function allow user to claim task based on task Id;
     function claimTask(uint256 _taskId) external {
+        if (_taskId >= s_taskCounter) {
+            revert TaskManager__InvalidTaskId();
+        }
         Task storage task = s_tasks[_taskId];
         if (task.status != TaskStatus.Created) {
             revert TaskManager__TaskAllreadyClaimed();
-        }
-        if (_taskId >= s_taskCounter) {
-            revert TaskManager__InvalidTaskId();
         }
         if (msg.sender == task.creator) {
             revert TaskManager__OwnerCannotClaimTask();
@@ -136,16 +148,27 @@ contract TaskManager {
         emit TaskClaimed(_taskId, msg.sender);
     }
 
-    function submitTask(uint256 _taskId) external onlyClaimer(_taskId) {
+    // this function allow claimed user to submit the task if the given work was done by claimed user;
+    function submitTask(uint256 _taskId) external {
+        if (_taskId >= s_taskCounter) {
+            revert TaskManager__InvalidTaskId();
+        }
         Task storage task = s_tasks[_taskId];
         if (task.status != TaskStatus.InProgress) {
             revert("TaskManager__TaskIsNotInProgress");
         }
+        if (msg.sender != task.claimer) {
+            revert TaskManager__onlyTaskClaimerCanCallThisFunc();
+        }
+
         task.status = TaskStatus.Verifing;
         emit TaskVerifing(_taskId);
     }
 
     function verifyTask(uint256 _taskId) external onlyCreater(_taskId) {
+        if (_taskId >= s_taskCounter) {
+            revert TaskManager__InvalidTaskId();
+        }
         Task storage task = s_tasks[_taskId];
         if (task.status != TaskStatus.Verifing) {
             if (task.status == TaskStatus.Created) {
@@ -164,7 +187,27 @@ contract TaskManager {
         emit TaskCompleted(_taskId, task.creator, task.completer);
     }
 
-    /***
+    //function to withdrawll the reward from the contract?
+    function cliamReward(uint256 _taskId) external nonReentrant {
+        if (_taskId >= s_taskCounter) {
+            revert TaskManager__InvalidTaskId();
+        }
+        if (s_claimerReward[msg.sender][_taskId] == 0) {
+            revert TaskManager__TaskDontHaveBalance();
+        }
+
+        (bool success, ) = payable(address(msg.sender)).call{
+            value: s_claimerReward[msg.sender][_taskId]
+        }("");
+
+        if (!success) {
+            revert TaskManager__TransferFailed();
+        }
+
+        s_claimerReward[msg.sender][_taskId] = 0;
+    }
+
+    /**
      * Getters functions
      */
     function getTask(uint256 _taskId) external view returns (Task memory) {
@@ -178,6 +221,7 @@ contract TaskManager {
         if (_taskId >= s_taskCounter) {
             revert TaskManager__InvalidTaskId();
         }
+
         return s_tasks[_taskId].status;
     }
 }

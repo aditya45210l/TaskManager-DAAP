@@ -14,10 +14,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { contract, erc20Abi } from "@/constants/constants";
 import { ChevronDownIcon, CircleAlert } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useWriteContract } from "wagmi";
+import { waitForTransactionReceipt } from "@wagmi/core";
 
+import { useConfig } from "wagmi";
+import { parseEther } from "viem";
 const Page = () => {
   const {
     register,
@@ -34,13 +39,39 @@ const Page = () => {
   });
 
   const [open, setOpen] = useState(false);
-
   const [date, setDate] = useState<Date | undefined>(undefined);
+  const { writeContractAsync,isPaused,isPending} = useWriteContract();
+  const config = useConfig();
 
-  const onSubmit = (data) => {
-    const {title} = data;
-    console.log(data);
+  const onSubmit = async (data: {
+    category: string;
+    description: string;
+    date: string;
+    reward: string;
+    terms: boolean;
+    title: string;
+  }) => {
+    const {  description, reward, title } = data;
+
+    const createTaskHash = await writeContractAsync({
+      abi: erc20Abi,
+      address: contract as `0x${string}`,
+      functionName: "createTask",
+      args: [title, description, parseEther(reward)],
+    });
+    const taskRecipts = waitForTransactionReceipt(config,{
+      confirmations:3,
+      hash:createTaskHash
+    });
+    console.log((await taskRecipts).status);
+    console.log("hash:",createTaskHash);
+    console.log("CreateTask recipts:", taskRecipts);
+
   };
+
+  useEffect(() =>{
+        console.log("ispaused",isPaused,"isPending:",isPending);
+  },[isPaused,isPending]);
 
   return (
     <div className="flex flex-col gap-4 mx-auto bg-medium-dark px-6 md:px-8 py-6 rounded-xl shadow-2xl lg:max-w-4xl md:max-w-3xl">
@@ -222,28 +253,27 @@ const Page = () => {
 
         {/* Terms Checkbox */}
         <div className="flex flex-col">
-
-        <div className="flex items-center py-2">
-          <input
-            type="checkbox"
-            id="terms"
-            {...register("terms", { required: "You must accept the terms" })}
-            className="form-checkbox text-[#67E8F9] bg-[#334155] border-[#64748B] rounded focus:ring-[#67E8F9]"
-          />
-          <label
-            htmlFor="terms"
-            className="ml-2 text-sm text-[#94A3B8] cursor-pointer select-none"
-          >
-            I understand that creating this task will incur a small gas fee and
-            will be recorded on the blockchain.
-          </label>
-        </div>
-        {errors.terms && (
-          <span className="text-red-600 flex text-sm gap-1 items-center px-1">
-            <CircleAlert size={14} />
-            <p>{errors.terms.message}</p>
-          </span>
-        )}
+          <div className="flex items-center py-2">
+            <input
+              type="checkbox"
+              id="terms"
+              {...register("terms", { required: "You must accept the terms" })}
+              className="form-checkbox text-[#67E8F9] bg-[#334155] border-[#64748B] rounded focus:ring-[#67E8F9]"
+            />
+            <label
+              htmlFor="terms"
+              className="ml-2 text-sm text-[#94A3B8] cursor-pointer select-none"
+            >
+              I understand that creating this task will incur a small gas fee
+              and will be recorded on the blockchain.
+            </label>
+          </div>
+          {errors.terms && (
+            <span className="text-red-600 flex text-sm gap-1 items-center px-1">
+              <CircleAlert size={14} />
+              <p>{errors.terms.message}</p>
+            </span>
+          )}
         </div>
 
         {/* Buttons */}
@@ -258,7 +288,9 @@ const Page = () => {
             type="submit"
             className="rounded-md bg-blue-btn px-8 py-2 text-[#0F172A] text-base font-semibold shadow-lg hover:bg-blue-btn/80 cursor-pointer "
           >
-            Create Task
+            {
+              isPending ? "pending...":"Create Task"
+            }
           </button>
         </div>
       </form>

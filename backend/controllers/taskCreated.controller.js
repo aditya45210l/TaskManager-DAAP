@@ -4,7 +4,7 @@ import abi from "../utils/abi.js";
 import { CONTRACT_ADDRESS } from "../configs/env.js";
 import { decodeEventLog } from "viem";
 
-export const handleTaskCreated = async () => {
+export const handleTaskCreated = async (next) => {
   try {
     console.log("checking for tasks in the blockchain...");
 
@@ -18,7 +18,7 @@ export const handleTaskCreated = async () => {
       console.log("No tasks found in the blockchain.");
       return;
     } else if (listOfTasksInBlockchain.length !== listOfTasksInDB.length) {
-      console.log("Tasks in blockchain and database are not in sync.");
+      console.log("Tasks in blockchain and database are not sync.");
 
       for (const taskId of listOfTasksInBlockchain) {
         if (!listOfTasksInDB.some((task) => task.id === taskId)) {
@@ -35,6 +35,7 @@ export const handleTaskCreated = async () => {
     );
   } catch (error) {
     console.error("Error in handleTaskCreated:", error);
+    next();
   }
 };
 
@@ -51,6 +52,7 @@ export const createTask = async (args) => {
     // create new task document in DB
     await Task.create({
       id: Number(data.id),
+      title: data.title,
       description: data.description,
       reward: data.reward.toString(),
       creator: data.creator,
