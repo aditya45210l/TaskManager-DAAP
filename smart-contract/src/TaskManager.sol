@@ -34,6 +34,13 @@ contract TaskManager is ReentrancyGuard {
         uint256 reward;
     }
 
+    struct Royality {
+        uint256 claimerP;
+        uint256 claimerN;
+        uint256 createrP;
+        uint256 createrN;
+    }
+
     /**
      *
      * State Variables
@@ -53,8 +60,6 @@ contract TaskManager is ReentrancyGuard {
     // The mapping stores the claimer reward for each task.
     mapping(address claimer => mapping(uint256 _taskId => uint256 _reward))
         public s_claimerReward;
-    //mapping for registerd user!
-    mapping(address => uint256) userLoyaltyPoints;
 
     //Events
     event TaskCreated(
@@ -83,16 +88,6 @@ contract TaskManager is ReentrancyGuard {
     error TaskManager__TransferFailed();
     error TaskManager__notInoughBalaneToCreateTask();
     error TaskManager__onlyTaskClaimerCanCallThisFunc();
-
-    modifier onlyCreater(uint256 _taskId) {
-        if (_taskId >= s_taskCounter) {
-            revert TaskManager__InvalidTaskId();
-        }
-        if (msg.sender != s_tasks[_taskId].creator) {
-            revert TaskManager__NotTaskCreator();
-        }
-        _;
-    }
 
     constructor() {
         i_owner = msg.sender;
@@ -165,11 +160,14 @@ contract TaskManager is ReentrancyGuard {
         emit TaskVerifing(_taskId);
     }
 
-    function verifyTask(uint256 _taskId) external onlyCreater(_taskId) {
+    function verifyTask(uint256 _taskId) external {
         if (_taskId >= s_taskCounter) {
             revert TaskManager__InvalidTaskId();
         }
         Task storage task = s_tasks[_taskId];
+        if (msg.sender != s_tasks[_taskId].creator) {
+            revert TaskManager__NotTaskCreator();
+        }
         if (task.status != TaskStatus.Verifing) {
             if (task.status == TaskStatus.Created) {
                 revert("TaskManager__NoOneHasClaimedTaskYet");
@@ -182,7 +180,7 @@ contract TaskManager is ReentrancyGuard {
             }
         }
         s_claimerReward[payable(task.claimer)][_taskId] = task.reward;
-        task.completer = msg.sender;
+        task.completer = task.claimer;
         task.status = TaskStatus.Completed;
         emit TaskCompleted(_taskId, task.creator, task.completer);
     }
