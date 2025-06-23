@@ -49,6 +49,8 @@ export const createTask = async (args) => {
       functionName: "getTask",
       args: [taskId],
     });
+    console.log("data: ",data);
+
     // create new task document in DB
     await Task.create({
       id: Number(data.id),

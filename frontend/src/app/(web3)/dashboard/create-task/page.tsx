@@ -17,20 +17,31 @@ import {
 import { contract, erc20Abi } from "@/constants/constants";
 import { ChevronDownIcon, CircleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useWriteContract } from "wagmi";
 import { waitForTransactionReceipt } from "@wagmi/core";
 
 import { useConfig } from "wagmi";
 import { parseEther } from "viem";
+
+type I_formSubmit = {
+  title: string;
+  description: string;
+  category: string;
+  date: string;
+  reward: string;
+  terms: boolean;
+};
 const Page = () => {
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm({
+  } = useForm<I_formSubmit>({
     defaultValues: {
+      title: "",
+      description: "",
       category: "",
       reward: "",
       date: undefined,
@@ -40,38 +51,31 @@ const Page = () => {
 
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>(undefined);
-  const { writeContractAsync,isPaused,isPending} = useWriteContract();
+  const { writeContractAsync, isPaused, isPending } = useWriteContract();
   const config = useConfig();
 
-  const onSubmit = async (data: {
-    category: string;
-    description: string;
-    date: string;
-    reward: string;
-    terms: boolean;
-    title: string;
-  }) => {
-    const {  description, reward, title } = data;
+  const onSubmit: SubmitHandler<I_formSubmit> = async (data) => {
+    const { description, reward, title } = data;
 
     const createTaskHash = await writeContractAsync({
       abi: erc20Abi,
       address: contract as `0x${string}`,
       functionName: "createTask",
+      value:parseEther(reward),
       args: [title, description, parseEther(reward)],
     });
-    const taskRecipts = waitForTransactionReceipt(config,{
-      confirmations:3,
-      hash:createTaskHash
+    const taskRecipts = waitForTransactionReceipt(config, {
+      confirmations: 3,
+      hash: createTaskHash,
     });
     console.log((await taskRecipts).status);
-    console.log("hash:",createTaskHash);
+    console.log("hash:", createTaskHash);
     console.log("CreateTask recipts:", taskRecipts);
-
   };
 
-  useEffect(() =>{
-        console.log("ispaused",isPaused,"isPending:",isPending);
-  },[isPaused,isPending]);
+  useEffect(() => {
+    console.log("ispaused", isPaused, "isPending:", isPending);
+  }, [isPaused, isPending]);
 
   return (
     <div className="flex flex-col gap-4 mx-auto bg-medium-dark px-6 md:px-8 py-6 rounded-xl shadow-2xl lg:max-w-4xl md:max-w-3xl">
@@ -233,7 +237,7 @@ const Page = () => {
                     selected={date}
                     captionLayout="dropdown"
                     onSelect={(date) => {
-                      field.onChange(date?.toString());
+                      field.onChange(String(date));
                       setDate(date);
                       setOpen(false);
                     }}
@@ -288,9 +292,7 @@ const Page = () => {
             type="submit"
             className="rounded-md bg-blue-btn px-8 py-2 text-[#0F172A] text-base font-semibold shadow-lg hover:bg-blue-btn/80 cursor-pointer "
           >
-            {
-              isPending ? "pending...":"Create Task"
-            }
+            {isPending ? "pending..." : "Create Task"}
           </button>
         </div>
       </form>

@@ -1,233 +1,407 @@
 
   export default [
-    { "type": "constructor", "inputs": [], "stateMutability": "nonpayable" },
-    {
-      "type": "function",
-      "name": "claimTask",
-      "inputs": [
-        { "name": "_taskId", "type": "uint256", "internalType": "uint256" }
-      ],
-      "outputs": [],
-      "stateMutability": "nonpayable"
-    },
-    {
-      "type": "function",
-      "name": "createTask",
-      "inputs": [
-        { "name": "_description", "type": "string", "internalType": "string" },
-        { "name": "_reward", "type": "uint256", "internalType": "uint256" }
-      ],
-      "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
-      "stateMutability": "nonpayable"
-    },
-    {
-      "type": "function",
-      "name": "getTask",
-      "inputs": [
-        { "name": "_taskId", "type": "uint256", "internalType": "uint256" }
-      ],
-      "outputs": [
-        {
-          "name": "",
-          "type": "tuple",
-          "internalType": "struct TaskManager.Task",
-          "components": [
-            { "name": "id", "type": "uint256", "internalType": "uint256" },
-            {
-              "name": "description",
-              "type": "string",
-              "internalType": "string"
-            },
-            { "name": "creator", "type": "address", "internalType": "address" },
-            {
-              "name": "completer",
-              "type": "address",
-              "internalType": "address"
-            },
-            { "name": "claimer", "type": "address", "internalType": "address" },
-            {
-              "name": "status",
-              "type": "uint8",
-              "internalType": "enum TaskManager.TaskStatus"
-            },
-            { "name": "reward", "type": "uint256", "internalType": "uint256" }
-          ]
-        }
-      ],
-      "stateMutability": "view"
-    },
-    {
-      "type": "function",
-      "name": "getTaskStatus",
-      "inputs": [
-        { "name": "_taskId", "type": "uint256", "internalType": "uint256" }
-      ],
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint8",
-          "internalType": "enum TaskManager.TaskStatus"
-        }
-      ],
-      "stateMutability": "view"
-    },
-    {
-      "type": "function",
-      "name": "s_claimerReward",
-      "inputs": [
-        { "name": "claimer", "type": "address", "internalType": "address" },
-        { "name": "_taskId", "type": "uint256", "internalType": "uint256" }
-      ],
-      "outputs": [
-        { "name": "_reward", "type": "uint256", "internalType": "uint256" }
-      ],
-      "stateMutability": "view"
-    },
-    {
-      "type": "function",
-      "name": "s_repuction",
-      "inputs": [{ "name": "", "type": "address", "internalType": "address" }],
-      "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
-      "stateMutability": "view"
-    },
-    {
-      "type": "function",
-      "name": "s_taskCounter",
-      "inputs": [],
-      "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
-      "stateMutability": "view"
-    },
-    {
-      "type": "function",
-      "name": "s_tasks",
-      "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
-      "outputs": [
-        { "name": "id", "type": "uint256", "internalType": "uint256" },
-        { "name": "description", "type": "string", "internalType": "string" },
-        { "name": "creator", "type": "address", "internalType": "address" },
-        { "name": "completer", "type": "address", "internalType": "address" },
-        { "name": "claimer", "type": "address", "internalType": "address" },
-        {
-          "name": "status",
-          "type": "uint8",
-          "internalType": "enum TaskManager.TaskStatus"
-        },
-        { "name": "reward", "type": "uint256", "internalType": "uint256" }
-      ],
-      "stateMutability": "view"
-    },
-    {
-      "type": "function",
-      "name": "submitTask",
-      "inputs": [
-        { "name": "_taskId", "type": "uint256", "internalType": "uint256" }
-      ],
-      "outputs": [],
-      "stateMutability": "nonpayable"
-    },
-    {
-      "type": "function",
-      "name": "verifyTask",
-      "inputs": [
-        { "name": "_taskId", "type": "uint256", "internalType": "uint256" }
-      ],
-      "outputs": [],
-      "stateMutability": "nonpayable"
-    },
-    {
-      "type": "event",
-      "name": "TaskClaimed",
-      "inputs": [
-        {
-          "name": "taskId",
-          "type": "uint256",
-          "indexed": true,
-          "internalType": "uint256"
-        },
-        {
-          "name": "claimer",
-          "type": "address",
-          "indexed": false,
-          "internalType": "address"
-        }
-      ],
-      "anonymous": false
-    },
-    {
-      "type": "event",
-      "name": "TaskCompleted",
-      "inputs": [
-        {
-          "name": "taskId",
-          "type": "uint256",
-          "indexed": true,
-          "internalType": "uint256"
-        },
-        {
-          "name": "TaskOwner",
-          "type": "address",
-          "indexed": true,
-          "internalType": "address"
-        },
-        {
-          "name": "completer",
-          "type": "address",
-          "indexed": true,
-          "internalType": "address"
-        }
-      ],
-      "anonymous": false
-    },
-    {
-      "type": "event",
-      "name": "TaskCreated",
-      "inputs": [
-        {
-          "name": "taskId",
-          "type": "uint256",
-          "indexed": true,
-          "internalType": "uint256"
-        },
-        {
-          "name": "reward",
-          "type": "uint256",
-          "indexed": false,
-          "internalType": "uint256"
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "indexed": false,
-          "internalType": "string"
-        }
-      ],
-      "anonymous": false
-    },
-    {
-      "type": "event",
-      "name": "TaskVerifing",
-      "inputs": [
-        {
-          "name": "taskId",
-          "type": "uint256",
-          "indexed": true,
-          "internalType": "uint256"
-        }
-      ],
-      "anonymous": false
-    },
-    { "type": "error", "name": "TaskManager__InvalidTaskId", "inputs": [] },
-    { "type": "error", "name": "TaskManager__NotTaskClaimer", "inputs": [] },
-    { "type": "error", "name": "TaskManager__NotTaskCreator", "inputs": [] },
-    {
-      "type": "error",
-      "name": "TaskManager__OwnerCannotClaimTask",
-      "inputs": []
-    },
-    {
-      "type": "error",
-      "name": "TaskManager__TaskAllreadyClaimed",
-      "inputs": []
-    }
-  ]
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_taskId",
+				"type": "uint256"
+			}
+		],
+		"name": "claimTask",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_taskId",
+				"type": "uint256"
+			}
+		],
+		"name": "cliamReward",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_title",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_reward",
+				"type": "uint256"
+			}
+		],
+		"name": "createTask",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "ReentrancyGuardReentrantCall",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_taskId",
+				"type": "uint256"
+			}
+		],
+		"name": "submitTask",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "TaskManager__InvalidTaskId",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "TaskManager__NotTaskCreator",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "TaskManager__OwnerCannotClaimTask",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "TaskManager__TaskAllreadyClaimed",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "TaskManager__TaskDontHaveBalance",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "TaskManager__TransferFailed",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "TaskManager__notInoughBalaneToCreateTask",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "TaskManager__onlyTaskClaimerCanCallThisFunc",
+		"type": "error"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "taskId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "claimer",
+				"type": "address"
+			}
+		],
+		"name": "TaskClaimed",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "taskId",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "TaskOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "completer",
+				"type": "address"
+			}
+		],
+		"name": "TaskCompleted",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "taskId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "reward",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			}
+		],
+		"name": "TaskCreated",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "taskId",
+				"type": "uint256"
+			}
+		],
+		"name": "TaskVerifing",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_taskId",
+				"type": "uint256"
+			}
+		],
+		"name": "verifyTask",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_taskId",
+				"type": "uint256"
+			}
+		],
+		"name": "getTask",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "title",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "description",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "creator",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "completer",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "claimer",
+						"type": "address"
+					},
+					{
+						"internalType": "enum TaskManager.TaskStatus",
+						"name": "status",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reward",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct TaskManager.Task",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_taskId",
+				"type": "uint256"
+			}
+		],
+		"name": "getTaskStatus",
+		"outputs": [
+			{
+				"internalType": "enum TaskManager.TaskStatus",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "claimer",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_taskId",
+				"type": "uint256"
+			}
+		],
+		"name": "s_claimerReward",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "_reward",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "s_repuction",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "s_taskCounter",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "s_tasks",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "title",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "creator",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "completer",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "claimer",
+				"type": "address"
+			},
+			{
+				"internalType": "enum TaskManager.TaskStatus",
+				"name": "status",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "reward",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
 
