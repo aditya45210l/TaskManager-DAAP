@@ -5,6 +5,7 @@ import { getSingleTaskController } from "../controllers/getSingleTask.controller
 const taskRouter = Router();
 
 taskRouter.get("/", getAllTaskController);
+
 taskRouter.get("/:address",getSingleTaskController);
 
 export default taskRouter;

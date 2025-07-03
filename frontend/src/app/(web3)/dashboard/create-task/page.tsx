@@ -281,7 +281,7 @@ const Page = () => {
         </div>
 
         {/* Buttons */}
-        <div className="flex justify-end gap-4">
+        <div className="flex justify-end gap-4 sm:flex-row flex-col">
           <button
             type="reset"
             className="rounded-md text-blue-btn border-2 border-blue-btn bg-transparent px-8 py-2 hover:border-blue-btn/70 active:border-blue-btn/50 active:ring-2 text-base font-semibold cursor-pointer"
@@ -290,7 +290,7 @@ const Page = () => {
           </button>
           <button
             type="submit"
-            className="rounded-md bg-blue-btn px-8 py-2 text-[#0F172A] text-base font-semibold shadow-lg hover:bg-blue-btn/80 cursor-pointer "
+            className="rounded-md bg-blue-btn px-8 py-2 text-[#ffffff] text-base font-semibold shadow-lg hover:bg-blue-btn/80 cursor-pointer "
           >
             {isPending ? "pending..." : "Create Task"}
           </button>

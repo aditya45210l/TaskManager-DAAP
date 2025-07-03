@@ -1,63 +1,23 @@
-import mongoose from "mongoose";
+import { model, Schema } from "mongoose";
 
-const taskSchema = new mongoose.Schema(
+const taskSchema = new Schema(
   {
-    id: {
-      type: Number,
-      required: true,
-      unique: true,
-      min: 0,
-    },
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-      minLength: 3,
-      maxLength: 50,
-      toLowerCase: true,
-    },
-    description: {
-      type: String,
-      required: true,
-      trim: true,
-      minLength: 20,
-      maxLength: 200,
-      toLowerCase: true,
-    },
-    creator: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    completer: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    id:{type:Number,unique:true},
+    title: { type: String, required: true, trim: true },
+    description: { type: String, required: true, trim: true },
+    reward: { type: String, required: true, trim: true },
+    creator: { type: String, required: true, trim: true },   // wallet address
+    claimer: { type: String, default: null, trim: true },    // wallet address
+    completer: { type: String, default: null, trim: true },  // wallet address
+    // category:{type:String,default:"all",trim:true,require:false},
     status: {
       type: String,
       enum: ["Created", "InProgress", "Verifing", "Completed"],
       default: "Created",
     },
-    claimer: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    reward: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    user: {
-      type: mongoose.Types.ObjectId,
-      ref: "User",
-      // require: true,
-      indexed: true,
-    },
   },
   { timestamps: true }
 );
 
-const Task = mongoose.model("Task", taskSchema);
+const Task = model("Task",taskSchema);
 export default Task;

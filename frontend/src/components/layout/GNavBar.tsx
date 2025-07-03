@@ -34,7 +34,7 @@ const GNavBar = () => {
           {/* Tasks */}
           <Link
             className="text-gray-300 hover:text-blue-btn font-medium leading-normal transition-colors flex items-center gap-1"
-            href="/"
+            href="/tasks"
           >
             <List size={18}/>
             <p>Tasks</p>
@@ -43,21 +43,21 @@ const GNavBar = () => {
           {/* Create Tasks */}
           <Link
             className="text-gray-300 hover:text-blue-btn font-medium leading-normal transition-colors flex items-center gap-1"
-            href="/"
+            href="/profile"
           >
             <User size={18}/>
             <p>Profile</p>
           </Link>
           <Link
             className="text-gray-300 hover:text-blue-btn font-medium leading-normal transition-colors flex items-center gap-1"
-            href="/"
+            href="/earning"
           >
             <DollarSign size={18}/>
             <p>Earning</p>
           </Link>
 
         </span>
-        <span className="flex items-center ">
+        <span className="flex items-center min-h-[39px] min-w-[154px]">
           <ConnectButton chainStatus={"none"} showBalance={false} />
         </span>
       </nav>

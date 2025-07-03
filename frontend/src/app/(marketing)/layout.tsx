@@ -1,16 +1,30 @@
-'use client'
+"use client";
 import Navbar from "@/components/landigPage/Navbar";
 import AuthGuard from "@/config/AuthGuard";
-import { ReactNode } from "react";
+import { useAuth } from "@/provider/provider";
+import { redirect } from "next/navigation";
 
-const unProctedLayout = ({ children }: { children: ReactNode }) => {
+import { ReactNode, useEffect } from "react";
+import { useAccount } from "wagmi";
+
+const Unprotected = ({ children }: { children: ReactNode }) => {
+  const { isConnected } = useAccount();
+  const status = useAuth();
+
+  useEffect(() => {
+    if (isConnected && status === "authenticated") {
+      console.log("user is connected");
+      redirect("/dashboard");
+    }
+  }, [isConnected, status]);
+
   return (
     <>
       <Navbar />
-      <main >
+      <main>
         <AuthGuard>{children}</AuthGuard>
       </main>
     </>
   );
 };
-export default unProctedLayout;
+export default Unprotected;

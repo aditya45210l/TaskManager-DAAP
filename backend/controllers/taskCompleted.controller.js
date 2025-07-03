@@ -2,12 +2,13 @@ import Task from "../models/task.model.js";
 
 export const taskCompleted = async (args) => {
   try {
-    const { taskId, taskOwner, completer } = args;
+    const { taskId, completer } = args;
     // Update the task in the database
     const updatedTask = await Task.findOneAndUpdate(
       { id: Number(taskId) },
       { completer: completer, status: "Completed" }
     );
+    // const UpdateUserData = await User.findOneAndUpdate({wallet:completer},{earning:})
     if (!updatedTask) {
       console.error(`Task with ID ${taskId} not found.`);
       return;

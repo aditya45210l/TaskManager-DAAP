@@ -1,6 +1,8 @@
+
 import Link from "next/link";
 
-const page = () => {
+const Page = () => {
+
 
   return (
     <div className="mx-auto flex flex-col items-center text-white bg-200">
@@ -20,7 +22,7 @@ const page = () => {
             Manage your tasks securely and transparently with TaskChain, the
             blockchain-based task manager built for the future of work.
           </p>
-          <Link href={'/dashboard'} className="btn-primary">
+          <Link href={"/dashboard"} className="btn-primary">
             Launch App
           </Link>
         </div>
@@ -217,9 +219,7 @@ const page = () => {
             and efficient task management. Get started today and experience the
             future of productivity.
           </p>
-          <button className="btn-primary mx-auto">
-            Connect Wallet
-          </button>
+          <button className="btn-primary mx-auto">Connect Wallet</button>
         </div>
       </section>
       <footer className="w-full flex items-center justify-between  py-8 px-16 text-xs text-gray-300 leading-relaxed tracking-wide ">
@@ -262,4 +262,4 @@ const page = () => {
     </div>
   );
 };
-export default page;
+export default Page;

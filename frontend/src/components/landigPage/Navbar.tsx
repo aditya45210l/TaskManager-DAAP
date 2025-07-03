@@ -43,7 +43,10 @@ const Navbar = () => {
               Support
             </Link>
           </span>
+          <span className="min-h-10 min-w-36">
+
         <ConnectButton chainStatus={"none"} showBalance={false} />
+          </span>
         </span>
       </nav>
     </header>

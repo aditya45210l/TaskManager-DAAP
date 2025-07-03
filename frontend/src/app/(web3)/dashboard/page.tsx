@@ -15,9 +15,25 @@ import GreatingSec from "@/components/dashBoard/GreatingSec";
 import DashProgressThree from "@/components/dashBoard/DashProgressThree";
 import DashNotification from "@/components/dashBoard/DashNotification";
 import DashTaskContain from "@/components/dashBoard/DashTaskContain";
+// import { UseTasks } from "@/hooks/UseTasks";
+// import { useEffect } from "react";
+// import { useAccount } from "wagmi";
 
-const Home = () => {
+const Dashboard = () => {
   const name = "Aditya";
+  // const { data, isLoading, isError } = UseTasks();
+  // const {isConnected}= useAccount();
+  // console.log("data: ", data);
+  // console.log("isLoading: ", isLoading);
+  // console.log("isError: ", isError);
+
+
+  // useEffect(() =>{
+  //   if(isConnected){
+      
+  //   }
+  // })
+
   return (
     <div className="flex flex-col gap-10">
       {/* Dashboard Top section */}
@@ -99,11 +115,11 @@ const Home = () => {
               <span>
                 <Select>
                   <SelectTrigger className="w-fit bg-medium-dark text-white border border-light-dark hover:bg-light-dark">
-                    <SelectValue placeholder="Reward Type"  />
+                    <SelectValue placeholder="Reward Type" />
                   </SelectTrigger>
 
                   <SelectContent className="bg-medium-dark text-white border border-light-dark ">
-                    <SelectGroup defaultValue={"all"} >
+                    <SelectGroup defaultValue={"all"}>
                       <SelectItem
                         value="all"
                         className="hover:bg-light-dark focus:bg-light-dark focus:text-white focus:cursor-pointer aria-selected:bg-light-dark"
@@ -178,9 +194,9 @@ const Home = () => {
           </div>
         </div>
         {/* Tasks Container */}
-        <DashTaskContain/>
+        <DashTaskContain />
       </section>
     </div>
   );
 };
-export default Home;
+export default Dashboard;

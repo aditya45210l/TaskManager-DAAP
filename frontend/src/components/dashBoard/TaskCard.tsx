@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { CalendarFold, DollarSign, StarIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 interface TaskCardProps {
   title: string;
   description: string;
@@ -34,7 +35,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   dueDate,
 }) => {
   return (
-    <div className="bg-[#1F2937] rounded-xl shadow-lg shadow-[#00A9E0]/10 overflow-hidden hover:shadow-2xl hover:shadow-[#00A9E0]/30 transition-all duration-300 flex flex-col">
+    <div className="bg-[#1F2937] rounded-xl shadow-lg shadow-[#00A9E0]/10 overflow-hidden hover:shadow-2xl hover:shadow-[#00A9E0]/30 transition-all duration-300 flex flex-col cursor-pointer">
       <div className="flex flex-1 flex-col px-4 py-6 gap-6">
         {/* Heading & status container */}
         <div className="flex flex-row">
@@ -103,7 +104,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
           </div>
         </div>
         <span className="flex items-center">
-          <button className="md:px-4 py-2 px-2 rounded-md bg-sky-700 transition-all cursor-pointer hover:bg-sky-800 active:bg-sky-950 text-sm">View Task</button>
+          <Link className="md:px-4 py-2 px-2 rounded-md bg-sky-700 transition-all cursor-pointer hover:bg-sky-800 active:bg-sky-950 text-sm" href={"./tasks/task-details"}>View Task</Link>
         </span>
       </div>
     </div>

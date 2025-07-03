@@ -1,16 +1,36 @@
 "use client";
 import Footer from "@/components/layout/Footer";
 import GNavBar from "@/components/layout/GNavBar";
-import AuthGuard from "@/config/AuthGuard";
-import { ReactNode } from "react";
+import { useAuth } from "@/provider/provider";
+import { redirect } from "next/navigation";
+
+import { ReactNode, useEffect } from "react";
+import { useAccount } from "wagmi";
 
 const ProtectedLayout = ({ children }: { children: ReactNode }) => {
+  const { isConnected } = useAccount();
+  const status = useAuth();
+
+  useEffect(() => {
+    if (isConnected && status === "unauthenticated") {
+      console.log("user is connected");
+      redirect("/");
+    }
+    if (!isConnected && status === "authenticated") {
+      redirect("/");
+    }
+  }, [isConnected, status]);
+
   return (
-    <AuthGuard>
-      <GNavBar />
-      <main className="container text-white px-4 md:px-6 my-6 md:my-12 mx-auto">{children}</main>
-      <Footer/>
-    </AuthGuard>
+    <>
+      <header className="min-h-[72px]">
+        <GNavBar />
+      </header>
+      <main className="container text-white px-4 md:px-6 my-6 md:my-8 mx-auto">
+        {children}
+      </main>
+      <Footer />
+    </>
   );
 };
 export default ProtectedLayout;
