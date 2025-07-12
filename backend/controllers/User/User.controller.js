@@ -1,3 +1,4 @@
+import { claimFailedDeposit } from "viem/zksync";
 import User from "../../models/user.model.js";
 
 export const getProfile = async (req, res, next) => {
@@ -13,11 +14,18 @@ export const getProfile = async (req, res, next) => {
         data: null,
       });
     }
+    const userData = {
+      ...user.toObject(),
+      claimedCount: user.claimed?.length || 0,
+      createdCount: user.created?.length || 0,
+    };
     res.status(200).json({
       success: true,
       isUser: true,
       message: "User found",
-      data: user,
+      data: userData,
+      claimedCount: user.claimed?.length || 0,
+      createdCount: user.created?.length || 0,
     });
   } catch (error) {
     next(error);
@@ -71,9 +79,8 @@ export const updateUser = async (req, res, next) => {
     console.log("user clalled for update user ✅!");
     const { userName } = await req.body;
     const address = await req.user;
-    if(String(userName).length < 3){
+    if (String(userName).length < 3) {
       throw new Error("Length must be more the 3");
-      
     }
     const updatedUser = await User.findOneAndUpdate(
       { wallet: address },

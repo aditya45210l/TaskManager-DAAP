@@ -26,13 +26,17 @@ export type UserDataType = {
   wallet: string;
   rating: number;
   earning: number;
+  created: [];
+  claimed: [];
+  claimedCount: number;
+  createdCount: number;
 };
 export interface AuthContextType {
   status: AuthenticationStatus;
 }
 
 export const AuthContext = createContext<AuthContextType>({
-  status: "loading"
+  status: "loading",
 });
 
 export function Provider({ children }: { children: ReactNode }) {
@@ -52,13 +56,13 @@ export function Provider({ children }: { children: ReactNode }) {
           { withCredentials: true }
         );
         if (createRes.data.success) {
-          return
+          return;
         } else {
           throw new Error(createRes.data.message);
         }
       }
       console.log("user found from userFetch: ", data.data);
-      return
+      return;
     } catch (e) {
       console.log("Error on the time of fetch:", e);
     }

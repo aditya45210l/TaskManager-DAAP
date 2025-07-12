@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { UserDataType } from "@/provider/provider";
+import FullPageLoader from "@/components/layout/FullLoading";
 
 const Dashboard = () => {
   const [data, setData] = useState<UserDataType>();
@@ -48,6 +49,10 @@ const Dashboard = () => {
       duration: 2000,
     });
   }, []);
+
+  if(!data){
+    return <FullPageLoader/>
+  }
 
   return (
     <div className="flex flex-col gap-10">
