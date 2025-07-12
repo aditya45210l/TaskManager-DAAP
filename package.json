@@ -1,0 +1,25 @@
+{
+  "name": "taskmanager-daap-f25",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+     "dev": "concurrently -k \"npm run dev --prefix backend\" \"wait-on http://localhost:5000 && npm run dev --prefix frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aditya45210l/TaskManager-DAAP.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aditya45210l/TaskManager-DAAP/issues"
+  },
+  "homepage": "https://github.com/aditya45210l/TaskManager-DAAP#readme",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "wait-on": "^8.0.3"
+  }
+}
