@@ -1,14 +1,14 @@
 import { FileUp } from "lucide-react";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
-import ShortPath from "../ShortPath";
-import { TaskCardProps } from "@/app/(web3)/tasks/task-details/page";
+import ShortPath from "../layout/ShortPath";
+import { TaskCardProps } from "@/app/(web3)/tasks/[taskId]/page";
 
 const TaskDetails_L = ({
   task,
   type,
 }: {
-  task: TaskCardProps;
+  task: TaskCardProps
   type: "details" | "claim";
 }) => {
   const statusClasses = {

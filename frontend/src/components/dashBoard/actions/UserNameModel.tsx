@@ -14,16 +14,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { useTaskMangerStore } from "@/store/AuthUserStore";
 
 export const UserNameModel = ({
   setPopUpModel,
   popUpModel,
-  fetchUserData,
+
 }: {
   setPopUpModel: (popUpModel: boolean) => void;
   popUpModel: boolean;
-  fetchUserData: () => void;
+
 }) => {
+  const fetchUserData = useTaskMangerStore((state) => state.fetchUserData);
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // prevent page reload
     const formData = new FormData(e.currentTarget);

@@ -14,16 +14,17 @@ export const getProfile = async (req, res, next) => {
         data: null,
       });
     }
-    const userData = {
+    const safeUser = {
       ...user.toObject(),
       claimedCount: user.claimed?.length || 0,
       createdCount: user.created?.length || 0,
+      earning:user.earning.toString(),
     };
     res.status(200).json({
       success: true,
       isUser: true,
       message: "User found",
-      data: userData,
+      data: safeUser,
       claimedCount: user.claimed?.length || 0,
       createdCount: user.created?.length || 0,
     });
@@ -42,7 +43,7 @@ export const createUser = async (req, res, next) => {
         name: userName,
         wallet: wallet,
         rating: 0,
-        earning: 0,
+        earning: BigInt(0),
       });
       if (!user) {
         throw new Error("user already exist");
@@ -58,7 +59,7 @@ export const createUser = async (req, res, next) => {
         name: wallet.slice(0, 4) + "..." + wallet.slice(-4, wallet.length),
         wallet: wallet,
         rating: 0,
-        earning: 0,
+        earning: BigInt(0),
       });
       if (!user) {
         throw new Error("user already exist");

@@ -6,6 +6,6 @@ const taskRouter = Router();
 
 taskRouter.get("/", getAllTaskController);
 
-taskRouter.get("/:address",getSingleTaskController);
+taskRouter.get("/:id",getSingleTaskController);
 
 export default taskRouter;

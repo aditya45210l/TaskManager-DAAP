@@ -3,27 +3,24 @@ import { CirclePlus, History, SquarePen } from "lucide-react";
 import Link from "next/link";
 import { Skeleton } from "../ui/skeleton";
 import { UserNameModel } from "./actions/UserNameModel";
-import { useState } from "react";
+import {  useState } from "react";
+import { useTaskMangerStore } from "@/store/AuthUserStore";
 
-const GreatingSec = ({
-  name,
-  fetchUserData,
-}: {
-  name: string | undefined;
+const GreatingSec = () => {
+  const {user} = useTaskMangerStore((state) => state);
 
-  fetchUserData: () => void;
-}) => {
   const [popUpModel, setPopUpModel] = useState<boolean>(false);
-  console.log(name);
-  
+  console.log(user);
+
+
   return (
     <section className=" font-outfit flex lg:flex-row flex-col gap-6 max-sm:mx-auto justify-between">
       <span className="my-auto items-center ">
         <span className="flex max-sm:justify-center text-3xl md:text-4xl tracking-tight sm:tracking-wide sm:leading-relaxed flex-wrap">
           <h2>Welcome Back,&nbsp;</h2>
-          {name ? (
+          {user?.name ? (
             <div className="flex flex-row gap-1.5 justify-center items-center">
-              <p className="text-blue-btn">{name} </p>
+              <p className="text-blue-btn">{user.name} </p>
               <button onClick={() => setPopUpModel(true)}>
                 <SquarePen
                   strokeWidth={2}
@@ -60,11 +57,7 @@ const GreatingSec = ({
         </button>
       </span>
       {popUpModel ? (
-        <UserNameModel
-          popUpModel={popUpModel}
-          setPopUpModel={setPopUpModel}
-          fetchUserData={fetchUserData}
-        />
+        <UserNameModel popUpModel={popUpModel} setPopUpModel={setPopUpModel} />
       ) : null}
     </section>
   );

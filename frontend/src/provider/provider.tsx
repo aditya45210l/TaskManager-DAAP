@@ -16,6 +16,7 @@ import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createSiweMessage } from "viem/siwe";
 import axios from "axios";
+import { useTaskMangerStore } from "@/store/AuthUserStore";
 
 export type AuthenticationStatus =
   | "loading"
@@ -41,9 +42,10 @@ export const AuthContext = createContext<AuthContextType>({
 
 export function Provider({ children }: { children: ReactNode }) {
   const [client] = useState(() => new QueryClient());
+    const fetchUserData = useTaskMangerStore((state) => state.fetchUserData);
   const [AUTHENTICATION_STATUS, setAUTHENTICATION_STATUS] =
     useState<AuthenticationStatus>("loading");
-  const fetchUser = async () => {
+  const checkAndCreateUser = async () => {
     try {
       const { data } = await axios.get("http://localhost:5000/api/v1/user/", {
         withCredentials: true, // Equivalent to withCredentials: true
@@ -97,7 +99,8 @@ export function Provider({ children }: { children: ReactNode }) {
         verifyRes.ok ? "authenticated" : "unauthenticated"
       );
       if (verifyRes.ok) {
-        fetchUser();
+        checkAndCreateUser();
+        fetchUserData();
       }
       return Boolean(verifyRes.ok);
     },
@@ -113,7 +116,9 @@ export function Provider({ children }: { children: ReactNode }) {
       const res = await fetch("/api/me");
       const result = await res.json();
       if (result.ok) {
+        fetchUserData();
         setAUTHENTICATION_STATUS("authenticated");
+
       } else {
         setAUTHENTICATION_STATUS("unauthenticated");
       }

@@ -2,6 +2,7 @@
 import Footer from "@/components/layout/Footer";
 import GNavBar from "@/components/layout/GNavBar";
 import { useAuth } from "@/provider/provider";
+import { useTaskMangerStore } from "@/store/AuthUserStore";
 import { redirect } from "next/navigation";
 
 import { ReactNode, useEffect } from "react";
@@ -11,10 +12,11 @@ import { useAccount } from "wagmi";
 const ProtectedLayout = ({ children }: { children: ReactNode }) => {
   const { isConnected } = useAccount();
   const {status} = useAuth();
-
+  const {fetchUserData} = useTaskMangerStore((state) =>state);
   useEffect(() => {
     if (isConnected && status === "unauthenticated") {
       console.log("user is connected");
+      fetchUserData();
       redirect("/");
     }
     if (!isConnected && status === "authenticated") {

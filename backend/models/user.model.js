@@ -24,7 +24,7 @@ const userSchema = new Schema(
       default: 0,
     },
     earning: {
-      type: Number,
+      type: BigInt,
       default: 0,
     },
 
