@@ -1,11 +1,10 @@
- 
-// import { usePathname } from "next/navigation";
 import PaginationCompo from "./Pagination";
 import { TaskCard } from "./TaskCard";
 import { tasks } from "./dummyData";
 
 const DashTaskContain = ({type}:{type:string}) => {
-  // const pathName = usePathname();
+  
+
   const _tasks = type === "dashboard" ? tasks.slice(0, 4) : tasks.slice(0, 12);
   return (
     <div className="flex flex-col gap-10">

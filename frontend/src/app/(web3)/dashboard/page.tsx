@@ -23,13 +23,11 @@ const Dashboard = () => {
       {/* Dashboard bottom section */}
       <section className="flex flex-col gap-10">
         <div className="flex flex-col gap-4">
-          {/* heading "Live task Feed - With Input" */}
-
           {/* Filter Container */}
-          <Filtter />
+          <Filtter type="dashboard"/>
         </div>
         {/* Tasks Container */}
-        <DashTaskContain type="dashboard" />
+
       </section>
     </div>
   );

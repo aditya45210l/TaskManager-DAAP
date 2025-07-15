@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "anvil":"anvil --block-time 1"
+    "anvil": "anvil --block-time 1"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
     "jose": "^6.0.11",
     "mongodb": "^6.16.0",
     "mongoose": "^8.15.1",
-    "viem": "^2.30.5"
+    "viem": "^2.30.5",
+    "zod": "^3.25.76"
   }
 }

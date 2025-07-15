@@ -10,7 +10,7 @@ const UserDetailsCard = ({
   type: "completed" | "rating" | "earning";
 }) => {
   const data = useTaskMangerStore((state) => state.user);
-  const { rating, claimedCount, createdCount,earning } = data ? data : {};
+  const { rating, claimedCount, earning } = data ? data : {};
   const convertedEth = formatEther(earning ? BigInt(earning) : parseEther("0"));
   console.log(data);
   return (
@@ -33,40 +33,40 @@ const UserDetailsCard = ({
         type === "completed" ? (
           <p className="text-4xl font-bold">{claimedCount}</p>
         ) : type === "earning" ? (
-          <p className="text-4xl font-bold">{Number(convertedEth).toFixed(2)} ETH</p>
+          <p className="text-4xl font-bold">
+            {Number(convertedEth).toFixed(2)} ETH
+          </p>
         ) : type === "rating" ? (
+          <div className="text-4xl font-bold flex gap-0.5 items-center">
+            <span className="pr-2">
+              <p>{rating}</p>
+            </span>
 
-            <div className="text-4xl font-bold flex gap-0.5 items-center">
-              <span className="pr-2">
-                <p>{rating}</p>
-              </span>
+            {[1, 2, 3, 4, 5].map((i) => {
+              const isFull = data.rating >= i;
+              const isHalf = data.rating >= i - 0.5 && data.rating < i;
 
-              {[1, 2, 3, 4, 5].map((i) => {
-                const isFull = data.rating >= i;
-                const isHalf = data.rating >= i - 0.5 && data.rating < i;
-
-                return (
-                  <Star
-                    key={i}
-                    strokeWidth={2}
-                    size={21}
-                    color="#fbbf24"
-                    fill={isFull || isHalf ? "#fbbf24" : "none"}
-                    style={{
-                      maskImage:
-                        isHalf && !isFull
-                          ? "linear-gradient(to right, black 50%, transparent 50%)"
-                          : undefined,
-                      WebkitMaskImage:
-                        isHalf && !isFull
-                          ? "linear-gradient(to right, black 50%, transparent 50%)"
-                          : undefined,
-                    }}
-                  />
-                );
-              })}
-            </div>
-
+              return (
+                <Star
+                  key={i}
+                  strokeWidth={2}
+                  size={21}
+                  color="#fbbf24"
+                  fill={isFull || isHalf ? "#fbbf24" : "none"}
+                  style={{
+                    maskImage:
+                      isHalf && !isFull
+                        ? "linear-gradient(to right, black 50%, transparent 50%)"
+                        : undefined,
+                    WebkitMaskImage:
+                      isHalf && !isFull
+                        ? "linear-gradient(to right, black 50%, transparent 50%)"
+                        : undefined,
+                  }}
+                />
+              );
+            })}
+          </div>
         ) : null
       ) : (
         <div className="grid grid-cols-1 md:grid-rows-2 gap-0.5 h-10 w-32">

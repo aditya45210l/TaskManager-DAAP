@@ -2,22 +2,11 @@
 import TaskDetails_L from "@/components/taskDetails/TaskDetailL";
 
 import { Button } from "@/components/ui/button";
+import { TaskCardProps } from "@/lib/constants/Types";
 
 import { Flag, Gavel, Star, } from "lucide-react";
 import Image from "next/image";
 
-export interface TaskCardProps {
-  title: string;
-  description: string;
-  status: "Open" | "Progress" | "Completed" | "Verifying";
-  creator: string;
-  reward: number;
-  currency: string;
-  usdEquivalent: number;
-  tags: string[];
-  rating: number;
-  dueDate: string;
-}
 
 const TaskDetails = ({params}:{params:{taskId:string}}) => {
   const task: TaskCardProps = {
