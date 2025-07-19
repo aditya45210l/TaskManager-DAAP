@@ -21,13 +21,15 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
-import DashTaskContain from "../dashBoard/DashTaskContain";
 import { useTaskStore } from "@/store/TaskStore";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   category: z.string().min(1, "Select a category"),
   reward: z.string().min(1, "Select a reward type"),
-  status: z.string().min(1, "Select a status"),
+  status: z
+    .enum(["Created", "InProgress", "Verifying", "Completed",'all'])
+    .optional(),
   input: z.string().optional(),
 });
 
@@ -38,22 +40,22 @@ export default function Filtter() {
     defaultValues: {
       category: "all",
       reward: "all",
-      status: "all",
+      status: "Created",
       input: "",
     },
   });
-console.log("Filtter component rendered");
-  fetchTask({category:"all",status:"Verifying"});
+  console.log("------Filtter component rendered----");
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log("Filters applied:", data);
+  const onSubmit = (fillters: z.infer<typeof formSchema>) => {
+    console.log("Filters applied:", fillters);
+    fetchTask(fillters);
   };
 
   //   const watchFields = form.watch();
 
-  //   useEffect(() => {
-  //     console.log("Live Filters:", watchFields);
-  //   }, [watchFields]);
+    useEffect(() => {
+          fetchTask({});
+    }, []);
 
   return (
     <>
@@ -178,10 +180,10 @@ console.log("Filtter component rendered");
                         <SelectContent className="bg-medium-dark text-white border border-light-dark">
                           <SelectGroup>
                             <SelectItem value="all">All</SelectItem>
-                            <SelectItem value="open">Open</SelectItem>
-                            <SelectItem value="pending">Pending</SelectItem>
-                            <SelectItem value="verifing">Verifying</SelectItem>
-                            <SelectItem value="completed">Completed</SelectItem>
+                            <SelectItem value="Created">Open</SelectItem>
+                            <SelectItem value="InProgress">Pending</SelectItem>
+                            <SelectItem value="Verifying">Verifying</SelectItem>
+                            <SelectItem value="Completed">Completed</SelectItem>
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -203,7 +205,7 @@ console.log("Filtter component rendered");
           </div>
         </form>
       </Form>
-      <DashTaskContain type="dashboard" />
+
     </>
   );
 }

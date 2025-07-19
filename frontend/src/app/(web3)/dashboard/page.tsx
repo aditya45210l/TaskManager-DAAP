@@ -1,9 +1,9 @@
 import GreatingSec from "@/components/dashBoard/GreatingSec";
 import DashProgressThree from "@/components/dashBoard/DashProgressThree";
 import DashNotification from "@/components/dashBoard/DashNotification";
-import DashTaskContain from "@/components/dashBoard/DashTaskContain";
-import Filtter from "@/components/layout/Filtter";
 
+import Filtter from "@/components/layout/Filtter";
+import DashTaskContain from "@/components/dashBoard/DashTaskContain";
 
 const Dashboard = () => {
   console.log("i am re-rendring dashboard!");
@@ -24,10 +24,10 @@ const Dashboard = () => {
       <section className="flex flex-col gap-10">
         <div className="flex flex-col gap-4">
           {/* Filter Container */}
-          <Filtter type="dashboard"/>
+          <Filtter />
+          <DashTaskContain type="dashboard" />
         </div>
         {/* Tasks Container */}
-
       </section>
     </div>
   );

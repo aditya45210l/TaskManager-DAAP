@@ -10,8 +10,6 @@ const GreatingSec = () => {
   const {user} = useTaskMangerStore((state) => state);
 
   const [popUpModel, setPopUpModel] = useState<boolean>(false);
-  console.log(user);
-
 
   return (
     <section className=" font-outfit flex lg:flex-row flex-col gap-6 max-sm:mx-auto justify-between">

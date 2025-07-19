@@ -17,6 +17,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createSiweMessage } from "viem/siwe";
 import axios from "axios";
 import { useTaskMangerStore } from "@/store/AuthUserStore";
+import { customRainbowKitTheme, shadcnRainbowKitTheme } from "@/styles/connectTheam";
 
 export type AuthenticationStatus =
   | "loading"
@@ -42,7 +43,7 @@ export const AuthContext = createContext<AuthContextType>({
 
 export function Provider({ children }: { children: ReactNode }) {
   const [client] = useState(() => new QueryClient());
-    const fetchUserData = useTaskMangerStore((state) => state.fetchUserData);
+  const fetchUserData = useTaskMangerStore((state) => state.fetchUserData);
   const [AUTHENTICATION_STATUS, setAUTHENTICATION_STATUS] =
     useState<AuthenticationStatus>("loading");
   const checkAndCreateUser = async () => {
@@ -118,7 +119,6 @@ export function Provider({ children }: { children: ReactNode }) {
       if (result.ok) {
         fetchUserData();
         setAUTHENTICATION_STATUS("authenticated");
-
       } else {
         setAUTHENTICATION_STATUS("unauthenticated");
       }
@@ -133,7 +133,7 @@ export function Provider({ children }: { children: ReactNode }) {
           adapter={authenticationAdapter}
           status={AUTHENTICATION_STATUS}
         >
-          <RainbowKitProvider>
+          <RainbowKitProvider theme={customRainbowKitTheme}>
             <AuthContext.Provider
               value={{
                 status: AUTHENTICATION_STATUS,

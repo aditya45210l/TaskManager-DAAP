@@ -12,7 +12,7 @@ const UserDetailsCard = ({
   const data = useTaskMangerStore((state) => state.user);
   const { rating, claimedCount, earning } = data ? data : {};
   const convertedEth = formatEther(earning ? BigInt(earning) : parseEther("0"));
-  console.log(data);
+  // console.log(data);
   return (
     <div className="rounded-xl shadow px-6 py-6 flex flex-col gap-4 bg-medium-dark justify-between">
       {type === "completed" ? (

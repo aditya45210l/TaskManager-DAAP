@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { DollarSign, House, List, User } from 'lucide-react';
 import { CustomConnectButton } from "./CustomConnect";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const GNavBar = () => {
   return (
@@ -60,8 +61,8 @@ const GNavBar = () => {
         </span>
         <span className="flex items-center h-[39px] w-[158px]">
           {
-            // <ConnectButton chainStatus={"none"} showBalance={false}/>
-            <CustomConnectButton/>
+            <ConnectButton chainStatus={"none"} showBalance={false}/>
+            // <CustomConnectButton/>
 
           }
         </span>

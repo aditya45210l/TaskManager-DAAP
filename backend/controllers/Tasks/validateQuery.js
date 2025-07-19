@@ -11,6 +11,8 @@ export const validateQueryScema = z.object({
 });
 
 export const validateQuery = (query) =>{
+    console.log("aditya",query);
+
     const safeQuery = validateQueryScema.safeParse(query);
     if(!safeQuery.success) {
         throw new Error("Invalid query parameters");

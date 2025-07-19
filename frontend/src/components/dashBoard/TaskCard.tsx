@@ -1,16 +1,23 @@
 import { Badge } from "@/components/ui/badge";
-import {  ArrowRightToLine, CalendarFold, DollarSign, StarIcon } from "lucide-react";
+import {
+  ArrowRightToLine,
+  CalendarFold,
+  DollarSign,
+  StarIcon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { formatEther } from "viem";
+import { FaEthereum } from "react-icons/fa";
 interface TaskCardProps {
   title: string;
   description: string;
   status: "Open" | "Progress" | "Completed" | "Verifying";
   creator: string;
   reward: number;
-  currency: string;
-  usdEquivalent: number;
-  tags: string[];
+  currency?: string;
+  ethPrice: number;
+  // tags: string[];
   rating: number;
   dueDate: string;
 }
@@ -28,14 +35,20 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   status,
   creator,
   reward,
-  currency,
-  usdEquivalent,
-  tags,
+  // currency,
+  ethPrice,
+  // tags,
   rating,
   dueDate,
 }) => {
+  // console.log("TaskCard re-rendered with:");
+  // console.log(reward);
+  // console.log("ethPric: ",ethPrice);
+  const _reward = reward ? formatEther(BigInt(reward)).toString() : "0";
+  const currency = "ETH";
+
   return (
-    <div className="bg-[#1F2937] rounded-xl shadow-lg shadow-[#00A9E0]/10 overflow-hidden hover:shadow-2xl hover:shadow-[#00A9E0]/30 transition-all duration-300 flex flex-col cursor-pointer">
+    <div className="bg-[#1F2937] rounded-xl shadow-lg shadow-[#00A9E0]/10 overflow-hidden hover:shadow-2xl hover:shadow-[#00A9E0]/30 transition-all duration-300 flex flex-col cursor-pointer min-h-80">
       <div className="flex flex-1 flex-col px-4 py-6 gap-6">
         {/* Heading & status container */}
         <div className="flex flex-row">
@@ -46,14 +59,18 @@ export const TaskCard: React.FC<TaskCardProps> = ({
         </div>
         {/* Reward and Task end date */}
         <div className="flex justify-between items-center text-gray-400 flex-wrap gap-1">
-          <span className="flex flex-row items-center gap-0.5 ">
-            <DollarSign color="#34d399" size={18} strokeWidth={2} />
+          <span className="flex flex-row items-center gap-0.5 text-gray-300">
+            {currency == "ETH" ? (
+              <FaEthereum />
+            ) : (
+              <DollarSign color="#34d399" size={18} strokeWidth={2} />
+            )}
             <p>
-              {reward}
-              {currency !== "ETH" ? ".00" : null} {currency}{" "}
+              {_reward}
+              {currency}
             </p>
             {currency === "ETH" ? (
-              <p className="text-xs  ">{`(~$${usdEquivalent} USD)`}</p>
+              <p className="text-xs  ">{`(~$${ethPrice} USD)`}</p>
             ) : null}
           </span>
           <span className="flex flex-row items-center gap-1">
@@ -66,7 +83,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
           <p className="text-gray-400 line-clamp-3">{description}</p>
         </div>
         {/* Tags section */}
-        <div className="flex gap-3 flex-wrap">
+        {/* <div className="flex gap-3 flex-wrap">
           {tags.map((tag) => {
             return (
               <Badge key={tag} className="bg-light-dark text-gray-300 text-xs">
@@ -74,7 +91,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               </Badge>
             );
           })}
-        </div>
+        </div> */}
       </div>
       {/* Footer */}
       <div className="bg-gray-900 border-t border-t-gray-400 px-4 py-6 flex flex-row justify-between ">
@@ -89,22 +106,52 @@ export const TaskCard: React.FC<TaskCardProps> = ({
             />
           </span>
           <div className="flex flex-col gap-0.5 justify-center">
-
-          <span>
-            <span className="font-semibold leading-relaxed">{creator}</span>
-          </span>
-          <span className=" flex gap-[1px] items-center justify-center">
-            <StarIcon size={15} color="#fbbf24" fill={Math.floor(rating) >= 1 ? "#fbbf24":''} strokeWidth={2} />
-            <StarIcon size={15} color="#fbbf24" fill={Math.floor(rating) >= 2 ? "#fbbf24":''} strokeWidth={2} />
-            <StarIcon size={15} color="#fbbf24" fill={Math.floor(rating) >= 3 ? "#fbbf24":''} strokeWidth={2} />
-            <StarIcon size={15} color="#fbbf24" fill={Math.floor(rating) >= 4 ? "#fbbf24":''} strokeWidth={2} />
-            <StarIcon size={15} color="#fbbf24" fill={Math.floor(rating) >= 5 ? "#fbbf24":''} strokeWidth={2} />
+            {/* user name */}
+            <span>
+              <span className="font-semibold leading-relaxed">{creator === `0x${String}` ? creator.slice(0,4) + "..." + creator.slice(creator.length - 4, creator.length): creator}</span>
+            </span>
+            <span className=" flex gap-[1px] items-center justify-center">
+              <StarIcon
+                size={15}
+                color="#fbbf24"
+                fill={Math.floor(rating) >= 1 ? "#fbbf24" : ""}
+                strokeWidth={2}
+              />
+              <StarIcon
+                size={15}
+                color="#fbbf24"
+                fill={Math.floor(rating) >= 2 ? "#fbbf24" : ""}
+                strokeWidth={2}
+              />
+              <StarIcon
+                size={15}
+                color="#fbbf24"
+                fill={Math.floor(rating) >= 3 ? "#fbbf24" : ""}
+                strokeWidth={2}
+              />
+              <StarIcon
+                size={15}
+                color="#fbbf24"
+                fill={Math.floor(rating) >= 4 ? "#fbbf24" : ""}
+                strokeWidth={2}
+              />
+              <StarIcon
+                size={15}
+                color="#fbbf24"
+                fill={Math.floor(rating) >= 5 ? "#fbbf24" : ""}
+                strokeWidth={2}
+              />
               <p className="text-xs text-gray-400"> ({rating})</p>
-          </span>
+            </span>
           </div>
         </div>
         <span className="flex items-center">
-          <Link className="md:px-4 py-1  rounded-md border-2 border-sky-600 transition-all cursor-pointer hover:text-gray-400 hover:shadow-[#00A9E0]/30 hover:border-sky-700  active:bg-sky-950 text-sm" href={"./tasks/task-details"}><ArrowRightToLine strokeWidth={2}  /></Link>
+          <Link
+            className="md:px-4 py-1  rounded-md border-2 border-sky-600 transition-all cursor-pointer hover:text-gray-400 hover:shadow-[#00A9E0]/30 hover:border-sky-700  active:bg-sky-950 text-sm"
+            href={"./tasks/task-details"}
+          >
+            <ArrowRightToLine strokeWidth={2} />
+          </Link>
         </span>
       </div>
     </div>

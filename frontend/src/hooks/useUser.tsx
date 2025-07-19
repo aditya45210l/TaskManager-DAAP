@@ -3,7 +3,7 @@ import { UserDataType } from "@/provider/provider";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 
-const UseUser = ():[UserDataType | undefined, () => Promise<void>] => {
+const useUser = ():[UserDataType | undefined, () => Promise<void>] => {
   const [_data, setData] = useState<UserDataType>();
   const fetchUserData = async () => {
     try {
@@ -29,4 +29,4 @@ const UseUser = ():[UserDataType | undefined, () => Promise<void>] => {
 
   return [data, fetchUserData]; // ✅ returns data and fetchUserData function
 };
-export default UseUser;
+export default useUser;

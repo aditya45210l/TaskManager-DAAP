@@ -4,10 +4,11 @@ import { validateQuery } from "./validateQuery.js";
 
 export const getAllTaskController = async (req, res, next) => {
   // Validate query parameters
-  const query = validateQuery(req.query);
-  const filter  = fillterQuery(query)
-  const skip = (query.page - 1) * query.limit;
   try {
+    const query = validateQuery(req.query);
+    const filter = fillterQuery(query);
+    const skip = (query.page - 1) * query.limit;
+
     const tasks = await Task.find(filter).skip(skip).limit(Number(query.limit));
 
     res.status(200).json({

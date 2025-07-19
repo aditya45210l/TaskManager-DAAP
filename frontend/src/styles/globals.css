@@ -36,18 +36,6 @@
   .select-form {
     @apply appearance-none block w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#E2E8F0] focus:outline-none focus:ring-2 focus:ring-[#67E8F9] border-2 border-[#334155] bg-[#0F172A] h-12 placeholder:text-[#64748B] md:p-3 p-2 py-0 text-base font-normal leading-normal transition-all duration-150 ease-in-out focus:border-[#67E8F9] focus:shadow-md focus:shadow-[#67E8F9]/30;
   }
-  /* Target RainbowKit default button */
-.custom-connect-wrapper button {
-  @apply h-12 px-6 rounded-lg bg-blue-btn text-white font-bold transition-all;
-
-  /* Optional: hover effects */
-  @apply hover:bg-[#00a8e0c1] active:scale-95;
-}
-
-/* Remove border if needed */
-.custom-connect-wrapper button[data-rk] {
-  border: none !important;
-}
 
 }
 

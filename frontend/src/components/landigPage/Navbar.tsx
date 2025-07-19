@@ -46,8 +46,8 @@ const Navbar = () => {
           </span>
         <span className="flex items-center h-[39px] w-[158px]">
           {
-            // <ConnectButton chainStatus={"none"} showBalance={false}/>
-            <CustomConnectButton/>
+            <ConnectButton chainStatus={"none"} showBalance={false}/>
+            // <CustomConnectButton/>
 
           }
         </span>
